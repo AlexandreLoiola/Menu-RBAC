@@ -1,5 +1,6 @@
 package com.alexandreloiola.MenuRbac.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -23,14 +24,9 @@ public class RoleModel {
     @Column(name = "description", length = 100, nullable = false, unique = true)
     private String description;
 
-    @ManyToMany
-    @JsonManagedReference
-    @JoinTable(
-            name = "TB_ROLE_MENU_ITEM",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id")
-    )
-    private Set<MenuItemModel> menuItemModels = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
+    private Set<MenuItemModel> menuItems = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false)
